@@ -1,22 +1,24 @@
 import logo from './logo.svg';
 import './App.css';
+import SceneInit from './lib/SceneInit';
+import { useEffect } from 'react';
+import * as THREE from 'three';
 
 function App() {
+
+  useEffect(() => {
+    const scene = new SceneInit('canvas');
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <div>
+          <canvas id="canvas" />
+        </div>
         <p>
-         Gonçalo Ferreira
+          Gonçalo Ferreira
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Link
-        </a>
       </header>
     </div>
   );
