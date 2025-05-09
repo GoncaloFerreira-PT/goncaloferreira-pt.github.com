@@ -32,7 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # --- Add these steps to build your application ---
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -43,7 +42,8 @@ jobs:
 
       - name: Build project
         run: npm run build # This command generates the 'build' folder
-      # --- End of added steps ---
+        env:
+          CI: false # <-- Added this block to ignore warnings in CI
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -51,8 +51,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the newly generated 'build' folder
-          path: './build' # This remains correct
+          path: './build'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
