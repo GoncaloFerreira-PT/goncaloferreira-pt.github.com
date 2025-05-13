@@ -21,6 +21,7 @@ class SceneInit {
     this.MAX_ROTATION_SPEED = 0.01; // Maximum rotation speed
     this.MIN_ROTATION_SPEED = -0.01; // Minimum rotation speed
     this.objects = [];
+    this.time = 0;
     
     // Mouse interaction components
     this.raycaster = new THREE.Raycaster();
@@ -32,32 +33,44 @@ class SceneInit {
     this.directionalLight = undefined;
 
     this.initialize();
-    this.createObjects(6);
+    this.createObjects(8);
     this.createParticleBackground();
     this.animate();
   }
 
   createObjects(count) {
-    const material = new THREE.MeshNormalMaterial();
+    const geometries = [
+      new THREE.BoxGeometry(16, 16, 16),
+      new THREE.ConeGeometry(10, 16, 4),
+      new THREE.OctahedronGeometry(10),
+      new THREE.TorusGeometry(8, 3, 16, 100),
+      new THREE.TetrahedronGeometry(10),
+      new THREE.DodecahedronGeometry(10),
+      new THREE.IcosahedronGeometry(10),
+      new THREE.CylinderGeometry(6, 6, 16, 32)
+    ];
 
-    // Calculate the total width needed based on object count
-    const spacing = 40; // Space between objects
+    const material = new THREE.MeshNormalMaterial();
+    const spacing = 40;
     const totalWidth = (count - 1) * spacing;
     const startX = -totalWidth / 2;
 
     for (let i = 0; i < count; i++) {
-      // Alternate between cube and pyramid
-      const geometry = i % 2 === 0 ? new THREE.BoxGeometry(16, 16, 16) : new THREE.ConeGeometry(10, 16, 4);
-      const mesh = new THREE.Mesh(geometry, material.clone()); // Clone material for individual control
+      const geometry = geometries[i % geometries.length];
+      const mesh = new THREE.Mesh(geometry, material.clone());
 
-      // Position objects in a line
+      // Position objects in a wave pattern
       mesh.position.x = startX + (i * spacing);
+      mesh.position.y = Math.sin(i * 0.5) * 15;
+      mesh.position.z = Math.cos(i * 0.5) * 15;
       
-      // Add some variation in Y position
-      mesh.position.y = i % 2 === 0 ? 10 : -10;
-      
-      // Add some random initial rotation
-      mesh.rotation.y = Math.random() * Math.PI;
+      // Add custom properties for animation
+      mesh.userData.baseY = mesh.position.y;
+      mesh.userData.baseZ = mesh.position.z;
+      mesh.userData.phaseOffset = i * 0.5;
+      mesh.userData.orbitRadius = 15;
+      mesh.userData.orbitSpeed = 0.5 + Math.random() * 0.5;
+      mesh.userData.baseScale = 1;
 
       this.objects.push(mesh);
       this.scene.add(mesh);
@@ -200,22 +213,29 @@ class SceneInit {
   }
 
   animate() {
-    window.requestAnimationFrame(this.animate.bind(this));
-    
-    // Calculate rotation speed
+    requestAnimationFrame(() => this.animate());
+    this.time += this.clock.getDelta();
+
+    // Smooth rotation speed transition
     this.rotationSpeed = this.rotationSpeed * (1 - this.rotationDamping) + 
                         this.targetRotationSpeed * this.rotationDamping;
     
-    // Animate all objects
-    this.objects.forEach(object => {
-      object.rotateX(this.rotationSpeed);
-      object.rotateY(this.rotationSpeed);
+    // Animate objects with wave and orbital motion
+    this.objects.forEach((obj) => {
+      // Orbital motion
+      const orbitAngle = this.time * obj.userData.orbitSpeed + obj.userData.phaseOffset;
+      obj.position.y = obj.userData.baseY + Math.sin(orbitAngle) * obj.userData.orbitRadius * 0.3;
+      obj.position.z = obj.userData.baseZ + Math.cos(orbitAngle) * obj.userData.orbitRadius * 0.2;
+
+      // Rotation
+      obj.rotation.x += this.rotationSpeed;
+      obj.rotation.y += this.rotationSpeed;
     });
     
     // Gradually decrease target rotation speed
     this.targetRotationSpeed *= 0.99;
 
-    // Animate particle background
+    // Keep existing particle animation
     if (this.particleSystem) {
       const particleRotationSpeed = this.rotationSpeed * 0.5;
       this.particleSystem.rotation.y += particleRotationSpeed;

@@ -1,8 +1,7 @@
 .projects-section {
-  padding: 4rem 2rem;
   position: relative;
   z-index: 1;
-  width: 90%;
+  width: 100%;
 }
 
 .projects-title {
@@ -25,14 +24,34 @@
   border-radius: 2px;
 }
 
-.about-header {
+.projects-header {
   text-align: center;
-  margin-bottom: 3rem;
+}
+
+.projects-header h2 {
+  font-size: 2rem;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
+}
+
+.projects-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: #61dafb;
+  border-radius: 2px;
 }
 
 .carousel-container {
   position: relative;
   max-width: 1200px;
+  min-width: 1000px;
   margin: 0 auto;
   height: 500px;
   display: flex;
@@ -83,7 +102,7 @@
 }
 
 .project-image {
-  flex: 0 0 50%;
+  flex: 0 0 45%;
   overflow: hidden;
   position: relative;
 }
@@ -101,28 +120,23 @@
 
 .project-content {
   flex: 1;
-  padding: 2rem;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.02)
-  );
 }
 
 .project-content h3 {
-  font-size: 1.8rem;
-  color: #fff;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #61dafb;
 }
 
 .project-content p {
-  color: #ccc;
+  font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 2rem;
-  flex-grow: 1;
+  color: #fff;
 }
 
 .project-button {
@@ -192,26 +206,38 @@
   box-shadow: 0 0 10px rgba(97, 218, 251, 0.4);
 }
 
-@media (max-width: 968px) {
-  .project-card {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .project-image {
-    flex: 0 0 200px;
-  }
-
-  .carousel-container {
-    height: 600px;
-  }
-}
-
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .projects-section {
     padding: 2rem 1rem;
   }
 
+  .project-card {
+    flex-direction: column;
+    height: auto;
+    margin: 0 5px;
+  }
+
+  .project-image {
+    flex: 0 0 250px;
+    width: 100%;
+  }
+
+  .project-content {
+    padding: 1.5rem;
+  }
+
+  .project-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .project-content p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
   .carousel-container {
     height: 700px;
   }

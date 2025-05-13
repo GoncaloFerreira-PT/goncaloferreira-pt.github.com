@@ -63,20 +63,29 @@ const projects = [
 const ProjectCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [direction, setDirection] = useState(null);
 
   const showNext = () => {
     if (!isTransitioning) {
       setIsTransitioning(true);
+      setDirection('next');
       setCurrentIndex((prevIndex) => (prevIndex + 1) % projects.length);
-      setTimeout(() => setIsTransitioning(false), 500);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setDirection(null);
+      }, 300);
     }
   };
 
   const showPrev = () => {
     if (!isTransitioning) {
       setIsTransitioning(true);
+      setDirection('prev');
       setCurrentIndex((prevIndex) => (prevIndex - 1 + projects.length) % projects.length);
-      setTimeout(() => setIsTransitioning(false), 500);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setDirection(null);
+      }, 300);
     }
   };
 
@@ -91,8 +100,8 @@ const ProjectCarousel = () => {
 
   return (
     <div className="projects-section">
-      <div className="about-header">
-        <h2 className="projects-title">My Projects</h2>
+      <div className="projects-header">
+        <h2>Projects</h2>
       </div>
       <div className="carousel-container">
         <button className="nav-button prev" onClick={showPrev}>❮</button>
@@ -101,7 +110,10 @@ const ProjectCarousel = () => {
             <div 
               key={project.id}
               className={`project-card ${index === 1 ? 'active' : ''} ${
-                isTransitioning ? 'transitioning' : ''
+                isTransitioning ? (
+                  direction === 'next' && index === 2 ? 'next' :
+                  direction === 'prev' && index === 0 ? 'prev' : ''
+                ) : ''
               }`}
             >
               <div className="project-image">
@@ -127,8 +139,12 @@ const ProjectCarousel = () => {
             onClick={() => {
               if (!isTransitioning) {
                 setIsTransitioning(true);
+                setDirection(index > currentIndex ? 'next' : 'prev');
                 setCurrentIndex(index);
-                setTimeout(() => setIsTransitioning(false), 500);
+                setTimeout(() => {
+                  setIsTransitioning(false);
+                  setDirection(null);
+                }, 300);
               }
             }}
           />

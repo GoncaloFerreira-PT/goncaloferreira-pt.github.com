@@ -1,0 +1,180 @@
+.nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(40, 44, 52, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(97, 218, 251, 0.15);
+  z-index: 1000;
+  padding: 1.2rem 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.nav-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 2rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* When title is visible, adjust layout */
+.nav-content:has(.nav-title.visible) {
+  justify-content: space-between;
+}
+
+.nav-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+  position: absolute;
+  left: 2rem;
+  visibility: hidden;
+  /* No transition on hiding */
+  transition: none;
+}
+
+.nav-title.visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  position: relative;
+  left: 0;
+  visibility: visible;
+  /* Smooth transition only when appearing */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #61dafb;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+}
+
+.nav-role {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.6rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-button {
+  border: none;
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.8rem 1.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 8px;
+  border-width: 2px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: max-content;
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(97, 218, 251, 0.1);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+}
+
+.nav-button:hover {
+  color: #61dafb;
+  text-shadow: 0 0 8px rgba(97, 218, 251, 0.3);
+}
+
+.nav-button:hover:before {
+  transform: scaleX(1);
+}
+
+.nav-button.active {
+  color: #61dafb;
+  background: rgba(97, 218, 251, 0.15);
+  box-shadow: 
+    0 0 20px rgba(97, 218, 251, 0.15),
+    inset 0 0 10px rgba(97, 218, 251, 0.05);
+}
+
+.nav-button.active:before {
+  transform: scaleX(1);
+}
+
+.nav-button:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .nav-header {
+    padding: 1rem 0;
+  }
+
+  .nav-content {
+    padding: 0 1rem;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .nav-title {
+    align-items: center;
+    position: relative;
+    left: 0;
+    margin-bottom: 0.3rem;
+    transform: translateX(0);
+  }
+
+  .nav-name {
+    font-size: 1.1rem;
+    background: linear-gradient(120deg, #ffffff, #61dafb);
+  }
+
+  .nav-role {
+    font-size: 0.8rem;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+    padding: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .nav-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.95rem;
+    height: 2.6rem;
+  }
+} 
