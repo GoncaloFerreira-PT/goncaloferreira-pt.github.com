@@ -1,12 +1,13 @@
 import './App.css';
 import SceneInit from './lib/SceneInit';
 import { useEffect } from 'react';
-import ProjectList from './components/ProjectList';
+import ProjectCarousel from './components/ProjectCarousel';
+import AboutMe from './components/AboutMe';
 
 function App() {
 
   useEffect(() => {
-    const scene = new SceneInit('canvas');
+    const scene = new SceneInit('canvas', 7);
   }, []);
 
   return (
@@ -17,7 +18,8 @@ function App() {
         </div>
         <h1>Gonçalo Ferreira</h1>
         <p className="subtitle">Full Stack Developer</p>
-        <ProjectList />
+        <AboutMe />
+        <ProjectCarousel />
       </header>
     </div>
   );

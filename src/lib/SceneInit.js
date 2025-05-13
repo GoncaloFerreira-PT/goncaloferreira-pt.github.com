@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 class SceneInit {
-  constructor(canvasId) {
+  constructor(canvasId) { // Default to 5 objects if not specified
     // NOTE: Core components to initialize Three.js app.
     this.scene = undefined;
     this.camera = undefined;
@@ -20,43 +20,48 @@ class SceneInit {
     this.rotationDamping = 0.98; // Damping factor for smooth deceleration
     this.MAX_ROTATION_SPEED = 0.01; // Maximum rotation speed
     this.MIN_ROTATION_SPEED = -0.01; // Minimum rotation speed
-    this.particles = undefined;
-    this.particleSystem = undefined;
+    this.objects = [];
+    
+    // Mouse interaction components
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.hoveredObject = null;
 
     // NOTE: Lighting is basically required.
     this.ambientLight = undefined;
     this.directionalLight = undefined;
 
     this.initialize();
+    this.createObjects(6);
     this.createParticleBackground();
     this.animate();
+  }
 
-    // Create cube
-    const boxGeometry = new THREE.BoxGeometry(16, 16, 16);
-    const boxMaterial = new THREE.MeshNormalMaterial();
-    this.boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+  createObjects(count) {
+    const material = new THREE.MeshNormalMaterial();
 
-    // Create pyramid (cone)
-    const pyramidGeometry = new THREE.ConeGeometry(10, 16, 4); // radius, height, segments
-    const pyramidMaterial = new THREE.MeshNormalMaterial();
-    this.pyramidMesh = new THREE.Mesh(pyramidGeometry, pyramidMaterial);
+    // Calculate the total width needed based on object count
+    const spacing = 40; // Space between objects
+    const totalWidth = (count - 1) * spacing;
+    const startX = -totalWidth / 2;
 
-    // Position both shapes on the left side
-    const offset = -25;
-    
-    // Position cube
-    this.boxMesh.position.x = -offset;
-    this.boxMesh.position.y = 5; // Move up
-    this.boxMesh.position.z = 0;
+    for (let i = 0; i < count; i++) {
+      // Alternate between cube and pyramid
+      const geometry = i % 2 === 0 ? new THREE.BoxGeometry(16, 16, 16) : new THREE.ConeGeometry(10, 16, 4);
+      const mesh = new THREE.Mesh(geometry, material.clone()); // Clone material for individual control
 
-    // Position pyramid
-    this.pyramidMesh.position.x = offset;
-    this.pyramidMesh.position.y = -5; // Move down
-    this.pyramidMesh.position.z = 0;
-    this.pyramidMesh.rotation.y = Math.PI / 4; // Rotate 45 degrees for better view
+      // Position objects in a line
+      mesh.position.x = startX + (i * spacing);
+      
+      // Add some variation in Y position
+      mesh.position.y = i % 2 === 0 ? 10 : -10;
+      
+      // Add some random initial rotation
+      mesh.rotation.y = Math.random() * Math.PI;
 
-    this.scene.add(this.boxMesh);
-    this.scene.add(this.pyramidMesh);
+      this.objects.push(mesh);
+      this.scene.add(mesh);
+    }
   }
 
   createParticleBackground() {
@@ -105,8 +110,8 @@ class SceneInit {
       1000
     );
     
-    // Adjust camera position to better view both shapes
-    this.camera.position.z = 48;
+    // Adjust camera position based on object count
+    this.camera.position.z = 120;
 
     // NOTE: Specify a canvas which is already created in the HTML.
     const canvas = document.getElementById(this.canvasId);
@@ -128,12 +133,59 @@ class SceneInit {
     // directional light - parallel sun rays
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     // this.directionalLight.castShadow = true;
-    this.directionalLight.position.set(-25, 32, 64);
+    this.directionalLight.position.set(0, 32, 64);
     this.scene.add(this.directionalLight);
 
-    // Event listeners
+    // Add all mouse event listeners
+    window.addEventListener('mousemove', (event) => this.onMouseMove(event), false);
+    window.addEventListener('mousedown', (event) => this.onMouseDown(event), false);
+    window.addEventListener('mouseup', (event) => this.onMouseUp(event), false);
     window.addEventListener('resize', () => this.onWindowResize(), false);
     window.addEventListener('wheel', (event) => this.onMouseWheel(event), false);
+  }
+
+  onMouseDown(event) {
+
+    if(this.hoveredObject) {
+      // Scale down the object to create a "pressed" effect
+      this.hoveredObject.scale.multiplyScalar(0.9);
+    }
+  }
+
+  onMouseUp(event) {
+    if (this.hoveredObject) {
+      // Restore the original scale
+      this.hoveredObject.scale.set(1.0, 1.0, 1.0);
+    }
+  }
+
+  onMouseMove(event) {
+    // Calculate mouse position in normalized device coordinates (-1 to +1)
+    this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the picking ray with the camera and mouse position
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+
+    // Calculate objects intersecting the picking ray
+    const intersects = this.raycaster.intersectObjects(this.objects);
+
+    // Reset previously hovered object if exists
+    if (this.hoveredObject && (!intersects.length || intersects[0].object !== this.hoveredObject)) {
+      this.hoveredObject.material = new THREE.MeshNormalMaterial();
+      this.hoveredObject = null;
+    }
+
+    // Set new hovered object
+    if (intersects.length) {
+      const object = intersects[0].object;
+      if (this.hoveredObject !== object) {
+        this.hoveredObject = object;
+        this.hoveredObject.material = new THREE.MeshPhongMaterial({ 
+          color: 0xff3366,
+        });
+      }
+    }
   }
 
   onMouseWheel(event) {
@@ -150,42 +202,34 @@ class SceneInit {
   animate() {
     window.requestAnimationFrame(this.animate.bind(this));
     
-    // Calculate rotation direction and speed
+    // Calculate rotation speed
     this.rotationSpeed = this.rotationSpeed * (1 - this.rotationDamping) + 
                         this.targetRotationSpeed * this.rotationDamping;
     
-    // Animate shapes
-    if (this.boxMesh != undefined && this.pyramidMesh != undefined) {
-      this.boxMesh.rotateX(this.rotationSpeed);
-      this.boxMesh.rotateY(this.rotationSpeed);
-      
-      this.pyramidMesh.rotateX(this.rotationSpeed);
-      this.pyramidMesh.rotateY(this.rotationSpeed);
-      
-      this.targetRotationSpeed *= 0.99;
-    }
+    // Animate all objects
+    this.objects.forEach(object => {
+      object.rotateX(this.rotationSpeed);
+      object.rotateY(this.rotationSpeed);
+    });
+    
+    // Gradually decrease target rotation speed
+    this.targetRotationSpeed *= 0.99;
 
     // Animate particle background
     if (this.particleSystem) {
-      // Base rotation follows the shapes' rotation
       const particleRotationSpeed = this.rotationSpeed * 0.5;
       this.particleSystem.rotation.y += particleRotationSpeed;
       this.particleSystem.rotation.x += particleRotationSpeed * 0.4;
 
-      // Make particles move in a wave pattern that follows rotation direction
       const positions = this.particleSystem.geometry.attributes.position.array;
       const time = Date.now() * 0.0001;
-      const rotationInfluence = this.rotationSpeed * 50; // Scale up the influence
+      const rotationInfluence = this.rotationSpeed * 50;
 
       for (let i = 0; i < positions.length; i += 3) {
-        // Wave motion
         positions[i + 1] += Math.sin(time + positions[i] * 0.01) * 0.1;
-        
-        // Add motion in rotation direction
         positions[i] += rotationInfluence * 0.1;
         positions[i + 2] += rotationInfluence * 0.1;
 
-        // Reset particles that move too far
         if (Math.abs(positions[i]) > 100) {
           positions[i] = (Math.random() - 0.5) * 200;
         }
@@ -209,15 +253,6 @@ class SceneInit {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    
-    // Update positions on window resize
-    const leftOffset = -window.innerWidth / 18;
-    if (this.boxMesh && this.pyramidMesh) {
-      this.boxMesh.position.x = leftOffset;
-      this.pyramidMesh.position.x = leftOffset;
-      this.camera.position.x = leftOffset;
-      this.directionalLight.position.x = leftOffset;
-    }
   }
 }
 
