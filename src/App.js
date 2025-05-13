@@ -2,7 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import SceneInit from './lib/SceneInit';
 import { useEffect } from 'react';
-import * as THREE from 'three';
+import ProjectCarousel from './components/ProjectCarousel';
 
 function App() {
 
@@ -16,9 +16,9 @@ function App() {
         <div>
           <canvas id="canvas" />
         </div>
-        <p>
-          Gonçalo Ferreira
-        </p>
+        <h1>Gonçalo Ferreira</h1>
+        <p className="subtitle">Full Stack Developer</p>
+        <ProjectCarousel />
       </header>
     </div>
   );
