@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ProjectCarousel.css';
+import { useTheme } from '../context/ThemeContext';
 
 const projects = [
   {
@@ -64,6 +65,7 @@ const ProjectCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [direction, setDirection] = useState(null);
+  const { colorTheme } = useTheme();
 
   const showNext = () => {
     if (!isTransitioning) {

@@ -1,8 +1,10 @@
 import React from 'react';
 import './Footer.css';
+import { useTheme } from '../context/ThemeContext';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { colorTheme } = useTheme();
 
   return (
     <footer className="footer">

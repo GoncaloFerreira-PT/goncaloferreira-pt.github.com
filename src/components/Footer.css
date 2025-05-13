@@ -1,9 +1,9 @@
 .footer {
   position: relative;
   z-index: 1;
-  background: rgba(40, 44, 52, 0.8);
+  background: var(--accent-transparent);
   backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(97, 218, 251, 0.1);
+  border-top: 1px solid var(--border-transparent);
   padding: 0.1rem 2rem 1rem;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .footer-section h3 {
-  color: #61dafb;
+  color: var(--primary);
   font-size: 1.2rem;
   margin-bottom: 1rem;
   position: relative;
@@ -38,23 +38,23 @@
   transform: translateX(-50%);
   width: 40px;
   height: 2px;
-  background: #61dafb;
+  background: var(--primary);
   border-radius: 2px;
 }
 
 .footer-section a {
-  color: #fff;
+  color: var(--text-primary);
   text-decoration: none;
   margin: 0.3rem 0;
   transition: color 0.3s ease;
 }
 
 .footer-section a:hover {
-  color: #61dafb;
+  color: var(--primary);
 }
 
 .footer-section p {
-  color: #fff;
+  color: var(--text-primary);
   margin: 0.3rem 0;
 }
 
@@ -66,25 +66,25 @@
 
 .social-links a {
   padding: 0.4rem 1rem;
-  border: 1px solid rgba(97, 218, 251, 0.2);
+  border: 1px solid var(--border-transparent);
   border-radius: 20px;
   transition: all 0.3s ease;
 }
 
 .social-links a:hover {
-  background: rgba(97, 218, 251, 0.1);
-  border-color: #61dafb;
+  background: var(--accent-transparent);
+  border-color: var(--primary);
   transform: translateY(-2px);
 }
 
 .footer-bottom {
   text-align: center;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-transparent);
 }
 
 .footer-bottom p {
-  color: #ccc;
+  color: var(--text-secondary);
   margin: 0.3rem 0;
   font-size: 0.9rem;
 }
