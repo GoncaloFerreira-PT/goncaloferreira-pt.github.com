@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import './NavHeader.css';
 
 const NavHeader = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [showTitle, setShowTitle] = useState(false);
+  const { colorTheme } = useTheme();
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
@@ -43,7 +45,7 @@ const NavHeader = () => {
   }, []);
 
   return (
-    <nav className="nav-header">
+    <nav className={`nav-header`}>
       <div className="nav-content">
         <div className={`nav-title ${showTitle ? 'visible' : ''}`}>
           <span className="nav-name">Gonçalo Ferreira</span>

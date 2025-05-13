@@ -28,14 +28,48 @@ class SceneInit {
     this.mouse = new THREE.Vector2();
     this.hoveredObject = null;
 
+    // Theme colors
+    this.themeColors = {
+      'react': new THREE.Color('#61dafb'),
+      'purple': new THREE.Color('#9d4edd'),
+      'ocean': new THREE.Color('#2cb67d'),
+      'sunset': new THREE.Color('#ff6b6b')
+    };
+    
+    // Get initial theme from DOM
+    const themeClass = document.querySelector('[class*="theme-"]');
+    if (themeClass) {
+      const themeMatch = themeClass.className.match(/theme-(\w+)/);
+      this.currentTheme = themeMatch ? themeMatch[1].toLowerCase() : 'react';
+    } else {
+      this.currentTheme = 'react';
+    }
+
     // NOTE: Lighting is basically required.
     this.ambientLight = undefined;
     this.directionalLight = undefined;
 
     this.initialize();
-    this.createObjects(8);
+    this.createObjects(4);
     this.createParticleBackground();
     this.animate();
+  }
+
+  setTheme(themeName) {
+    if (this.themeColors[themeName]) {
+      this.currentTheme = themeName;
+      // Update particle colors based on theme
+      if (this.particleSystem) {
+        const colors = this.particleSystem.geometry.attributes.color.array;
+        const themeColor = this.themeColors[themeName];
+        for (let i = 0; i < colors.length; i += 3) {
+          colors[i] = themeColor.r * 0.7 + Math.random() * 0.3;     // R
+          colors[i + 1] = themeColor.g * 0.7 + Math.random() * 0.3; // G
+          colors[i + 2] = themeColor.b * 0.7 + Math.random() * 0.3; // B
+        }
+        this.particleSystem.geometry.attributes.color.needsUpdate = true;
+      }
+    }
   }
 
   createObjects(count) {
@@ -43,21 +77,30 @@ class SceneInit {
       new THREE.BoxGeometry(16, 16, 16),
       new THREE.ConeGeometry(10, 16, 4),
       new THREE.OctahedronGeometry(10),
-      new THREE.TorusGeometry(8, 3, 16, 100),
-      new THREE.TetrahedronGeometry(10),
-      new THREE.DodecahedronGeometry(10),
-      new THREE.IcosahedronGeometry(10),
-      new THREE.CylinderGeometry(6, 6, 16, 32)
+      new THREE.TorusGeometry(8, 3, 16, 100)
     ];
 
-    const material = new THREE.MeshNormalMaterial();
+    const themes = ['ocean', 'react', 'purple', 'sunset'];
     const spacing = 40;
     const totalWidth = (count - 1) * spacing;
     const startX = -totalWidth / 2;
 
     for (let i = 0; i < count; i++) {
-      const geometry = geometries[i % geometries.length];
-      const mesh = new THREE.Mesh(geometry, material.clone());
+      const geometry = geometries[i];
+      const theme = themes[i];
+      const themeColor = this.themeColors[theme];
+      
+      const material = new THREE.MeshPhongMaterial({
+        color: themeColor,
+        emissive: themeColor,
+        emissiveIntensity: 0.2,
+        shininess: 50
+      });
+      
+      const mesh = new THREE.Mesh(geometry, material);
+
+      // Store the theme name with the mesh
+      mesh.userData.theme = theme;
 
       // Position objects in a wave pattern
       mesh.position.x = startX + (i * spacing);
@@ -158,45 +201,49 @@ class SceneInit {
   }
 
   onMouseDown(event) {
-
-    if(this.hoveredObject) {
-      // Scale down the object to create a "pressed" effect
-      this.hoveredObject.scale.multiplyScalar(0.9);
+    if (this.hoveredObject) {
+      // Set target scale for click effect
+      this.hoveredObject.userData.targetScale = 0.9;
+      
+      // Get the theme associated with this object
+      const theme = this.hoveredObject.userData.theme;
+      
+      // Dispatch theme change event
+      const event = new CustomEvent('themeChange', { 
+        detail: { theme: theme } 
+      });
+      window.dispatchEvent(event);
     }
   }
 
   onMouseUp(event) {
     if (this.hoveredObject) {
-      // Restore the original scale
-      this.hoveredObject.scale.set(1.0, 1.0, 1.0);
+      // Return to hover scale
+      this.hoveredObject.userData.targetScale = 1.1;
     }
   }
 
   onMouseMove(event) {
-    // Calculate mouse position in normalized device coordinates (-1 to +1)
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    // Update the picking ray with the camera and mouse position
     this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    // Calculate objects intersecting the picking ray
     const intersects = this.raycaster.intersectObjects(this.objects);
 
-    // Reset previously hovered object if exists
+    // Reset scale of previously hovered object
     if (this.hoveredObject && (!intersects.length || intersects[0].object !== this.hoveredObject)) {
-      this.hoveredObject.material = new THREE.MeshNormalMaterial();
+      // Smoothly scale back to original size
+      this.hoveredObject.userData.targetScale = 1;
       this.hoveredObject = null;
     }
 
-    // Set new hovered object
+    // Scale up newly hovered object
     if (intersects.length) {
       const object = intersects[0].object;
       if (this.hoveredObject !== object) {
         this.hoveredObject = object;
-        this.hoveredObject.material = new THREE.MeshPhongMaterial({ 
-          color: 0xff3366,
-        });
+        // Set target scale for hover effect
+        this.hoveredObject.userData.targetScale = 1.1;
       }
     }
   }
@@ -230,6 +277,15 @@ class SceneInit {
       // Rotation
       obj.rotation.x += this.rotationSpeed;
       obj.rotation.y += this.rotationSpeed;
+
+      // Smooth scale transitions
+      if (obj.userData.targetScale !== undefined) {
+        const currentScale = obj.scale.x;
+        const targetScale = obj.userData.targetScale;
+        const scaleDiff = targetScale - currentScale;
+        const newScale = currentScale + scaleDiff * 0.15; // Adjust this value to control transition speed
+        obj.scale.setScalar(newScale);
+      }
     });
     
     // Gradually decrease target rotation speed

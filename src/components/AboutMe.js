@@ -2,8 +2,11 @@ import React from 'react';
 import './AboutMe.css';
 import { FaReact, FaNodeJs, FaPython } from 'react-icons/fa';
 import { SiMongodb, SiThreedotjs, SiGodotengine } from 'react-icons/si';
+import { useTheme } from '../context/ThemeContext';
 
 const AboutMe = () => {
+  const { THEMES, changeColorTheme } = useTheme();
+  
   const calculateYearsOfExperience = () => {
     const startYear = 2020;
     const currentYear = new Date().getFullYear();
@@ -53,22 +56,38 @@ const AboutMe = () => {
 
         <div>
           <div className="about-grid">
-            <div className="about-card">
+            <div 
+              className="about-card" 
+              data-theme="react"
+              onClick={() => changeColorTheme(THEMES.REACT)}
+            >
               <h3>🎯 Focus</h3>
               <p>Passionate about creating immersive web experiences and solving complex problems through elegant code solutions.</p>
             </div>
             
-            <div className="about-card">
+            <div 
+              className="about-card"
+              data-theme="purple"
+              onClick={() => changeColorTheme(THEMES.PURPLE)}
+            >
               <h3>💡 Expertise</h3>
               <p>Specialized in full-stack development with a strong focus on 3D web technologies and interactive user experiences.</p>
             </div>
             
-            <div className="about-card">
+            <div 
+              className="about-card"
+              data-theme="ocean"
+              onClick={() => changeColorTheme(THEMES.OCEAN)}
+            >
               <h3>🚀 Journey</h3>
               <p>From backend systems to frontend animations, I love pushing the boundaries of what's possible on the web.</p>
             </div>
             
-            <div className="about-card">
+            <div 
+              className="about-card"
+              data-theme="sunset"
+              onClick={() => changeColorTheme(THEMES.SUNSET)}
+            >
               <h3>🤝 Collaboration</h3>
               <p>Experienced in working with cross-functional teams and bringing ideas to life through code.</p>
             </div>
