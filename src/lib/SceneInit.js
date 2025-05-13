@@ -20,12 +20,15 @@ class SceneInit {
     this.rotationDamping = 0.98; // Damping factor for smooth deceleration
     this.MAX_ROTATION_SPEED = 0.01; // Maximum rotation speed
     this.MIN_ROTATION_SPEED = -0.01; // Minimum rotation speed
+    this.particles = undefined;
+    this.particleSystem = undefined;
 
     // NOTE: Lighting is basically required.
     this.ambientLight = undefined;
     this.directionalLight = undefined;
 
     this.initialize();
+    this.createParticleBackground();
     this.animate();
 
     // Create cube
@@ -54,6 +57,43 @@ class SceneInit {
 
     this.scene.add(this.boxMesh);
     this.scene.add(this.pyramidMesh);
+  }
+
+  createParticleBackground() {
+    // Create particle geometry
+    const particleCount = 1000;
+    const particles = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const colors = new Float32Array(particleCount * 3);
+
+    // Create particles in a box volume
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      // Position
+      positions[i] = (Math.random() - 0.5) * 200;      // x
+      positions[i + 1] = (Math.random() - 0.5) * 200;  // y
+      positions[i + 2] = (Math.random() - 0.5) * 100;  // z
+
+      // Color - subtle blue tones
+      colors[i] = 0.5 + Math.random() * 0.5;     // R
+      colors[i + 1] = 0.5 + Math.random() * 0.5; // G
+      colors[i + 2] = 1;                         // B
+    }
+
+    particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particles.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    // Create particle material
+    const particleMaterial = new THREE.PointsMaterial({
+      size: 0.5,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.8,
+      sizeAttenuation: true
+    });
+
+    // Create particle system
+    this.particleSystem = new THREE.Points(particles, particleMaterial);
+    this.scene.add(this.particleSystem);
   }
 
   initialize() {
@@ -88,7 +128,7 @@ class SceneInit {
     // directional light - parallel sun rays
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     // this.directionalLight.castShadow = true;
-    this.directionalLight.position.set(-window.innerWidth / 18, 32, 64);
+    this.directionalLight.position.set(-25, 32, 64);
     this.scene.add(this.directionalLight);
 
     // Event listeners
@@ -109,20 +149,51 @@ class SceneInit {
 
   animate() {
     window.requestAnimationFrame(this.animate.bind(this));
+    
+    // Calculate rotation direction and speed
+    this.rotationSpeed = this.rotationSpeed * (1 - this.rotationDamping) + 
+                        this.targetRotationSpeed * this.rotationDamping;
+    
+    // Animate shapes
     if (this.boxMesh != undefined && this.pyramidMesh != undefined) {
-      // Smoothly interpolate between current and target rotation speeds
-      this.rotationSpeed = this.rotationSpeed * (1 - this.rotationDamping) + 
-                          this.targetRotationSpeed * this.rotationDamping;
-      
-      // Apply rotation to both shapes
       this.boxMesh.rotateX(this.rotationSpeed);
       this.boxMesh.rotateY(this.rotationSpeed);
       
       this.pyramidMesh.rotateX(this.rotationSpeed);
       this.pyramidMesh.rotateY(this.rotationSpeed);
       
-      // Gradually decrease target rotation speed for natural deceleration
       this.targetRotationSpeed *= 0.99;
+    }
+
+    // Animate particle background
+    if (this.particleSystem) {
+      // Base rotation follows the shapes' rotation
+      const particleRotationSpeed = this.rotationSpeed * 0.5;
+      this.particleSystem.rotation.y += particleRotationSpeed;
+      this.particleSystem.rotation.x += particleRotationSpeed * 0.4;
+
+      // Make particles move in a wave pattern that follows rotation direction
+      const positions = this.particleSystem.geometry.attributes.position.array;
+      const time = Date.now() * 0.0001;
+      const rotationInfluence = this.rotationSpeed * 50; // Scale up the influence
+
+      for (let i = 0; i < positions.length; i += 3) {
+        // Wave motion
+        positions[i + 1] += Math.sin(time + positions[i] * 0.01) * 0.1;
+        
+        // Add motion in rotation direction
+        positions[i] += rotationInfluence * 0.1;
+        positions[i + 2] += rotationInfluence * 0.1;
+
+        // Reset particles that move too far
+        if (Math.abs(positions[i]) > 100) {
+          positions[i] = (Math.random() - 0.5) * 200;
+        }
+        if (Math.abs(positions[i + 2]) > 50) {
+          positions[i + 2] = (Math.random() - 0.5) * 100;
+        }
+      }
+      this.particleSystem.geometry.attributes.position.needsUpdate = true;
     }
 
     this.render();

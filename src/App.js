@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import SceneInit from './lib/SceneInit';
 import { useEffect } from 'react';
-import ProjectCarousel from './components/ProjectCarousel';
+import ProjectList from './components/ProjectList';
 
 function App() {
 
@@ -18,7 +17,7 @@ function App() {
         </div>
         <h1>Gonçalo Ferreira</h1>
         <p className="subtitle">Full Stack Developer</p>
-        <ProjectCarousel />
+        <ProjectList />
       </header>
     </div>
   );
