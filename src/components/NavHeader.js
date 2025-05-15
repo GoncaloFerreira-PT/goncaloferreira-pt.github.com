@@ -1,17 +1,31 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import { FaSun, FaMoon } from 'react-icons/fa';
 import './NavHeader.css';
 
 const NavHeader = () => {
   const [activeSection, setActiveSection] = useState('about');
   const [showTitle, setShowTitle] = useState(false);
-  const { colorTheme } = useTheme();
+  const { colorTheme, isDarkMode, toggleTheme } = useTheme();
+  const isScrolling = useRef(false);
+  const scrollTimeout = useRef(null);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      isScrolling.current = true;
       setActiveSection(sectionId);
+      element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Clear any existing timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+      
+      // Set a timeout to re-enable scroll detection after animation
+      scrollTimeout.current = setTimeout(() => {
+        isScrolling.current = false;
+      }, 1000); // Adjust this value based on your scroll animation duration
     }
   };
 
@@ -26,22 +40,29 @@ const NavHeader = () => {
         setShowTitle(rect.bottom < 0);
       }
 
-      // Update active section
-      const scrollPosition = window.scrollY + 100;
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { top, bottom } = element.getBoundingClientRect();
-          if (top <= 100 && bottom >= 100) {
-            setActiveSection(section);
-            break;
+      // Only update active section if not currently programmatically scrolling
+      if (!isScrolling.current) {
+        const scrollPosition = window.scrollY + 100;
+        for (const section of sections) {
+          const element = document.getElementById(section);
+          if (element) {
+            const { top, bottom } = element.getBoundingClientRect();
+            if (top <= 100 && bottom >= 100) {
+              setActiveSection(section);
+              break;
+            }
           }
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
   }, []);
 
   return (
@@ -75,6 +96,13 @@ const NavHeader = () => {
             className={`nav-button ${activeSection === 'projects' ? 'active' : ''}`}
           >
             Projects
+          </button>
+          <button 
+            onClick={toggleTheme}
+            className="theme-toggle"
+            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
         </div>
       </div>

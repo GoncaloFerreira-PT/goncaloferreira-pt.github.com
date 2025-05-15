@@ -6,6 +6,11 @@
   border: 1px solid var(--border-transparent);
 }
 
+/* Light mode styles */
+.light-mode .about-container {
+  background: rgba(255, 255, 255, 0.8);
+}
+
 .about-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -25,6 +30,10 @@
   margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+}
+
+.light-mode .about-header h2 {
+  color: var(--primary-dark);
 }
 
 .about-header h2::after {
@@ -82,9 +91,18 @@
   justify-content: center;
 }
 
+.light-mode .tech-tag {
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--primary-dark);
+}
+
 .tech-icon {
   font-size: 1.1rem;
   transition: transform 0.3s ease;
+}
+
+.light-mode .tech-icon {
+  color: var(--primary);
 }
 
 .tech-tag:hover {
@@ -114,6 +132,10 @@
   cursor: pointer;
   position: relative;
   overflow: hidden;
+}
+
+.light-mode .about-card {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .about-card::before {
@@ -168,6 +190,10 @@
   font-size: 0.95rem;
 }
 
+.light-mode .about-card p {
+  color: var(--primary-dark);
+}
+
 .about-stats {
   grid-column: 1 / -1;
   display: flex;
@@ -193,6 +219,10 @@
 .stat-label {
   color: var(--text-secondary);
   font-size: 0.9rem;
+}
+
+.light-mode .stat-label {
+  color: var(--primary-dark);
 }
 
 @media (max-width: 1024px) {

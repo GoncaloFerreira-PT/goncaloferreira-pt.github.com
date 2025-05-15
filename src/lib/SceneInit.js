@@ -30,20 +30,38 @@ class SceneInit {
 
     // Theme colors
     this.themeColors = {
-      'react': new THREE.Color('#61dafb'),
-      'purple': new THREE.Color('#9d4edd'),
-      'ocean': new THREE.Color('#2cb67d'),
-      'sunset': new THREE.Color('#ff6b6b')
+      'react': {
+        main: new THREE.Color('#61dafb'),
+        background: new THREE.Color('#222222'),
+        lightBackground: new THREE.Color('#f8f9fa')
+      },
+      'purple': {
+        main: new THREE.Color('#9d4edd'),
+        background: new THREE.Color('#222222'),
+        lightBackground: new THREE.Color('#faf5ff')
+      },
+      'ocean': {
+        main: new THREE.Color('#2cb67d'),
+        background: new THREE.Color('#222222'),
+        lightBackground: new THREE.Color('#f0fff4')
+      },
+      'sunset': {
+        main: new THREE.Color('#ff6b6b'),
+        background: new THREE.Color('#222222'),
+        lightBackground: new THREE.Color('#fff5f5')
+      }
     };
     
-    // Get initial theme from DOM
+    // Get initial theme and mode from DOM
     const themeClass = document.querySelector('[class*="theme-"]');
+    const isDarkMode = !document.body.classList.contains('light-mode');
     if (themeClass) {
       const themeMatch = themeClass.className.match(/theme-(\w+)/);
       this.currentTheme = themeMatch ? themeMatch[1].toLowerCase() : 'react';
     } else {
       this.currentTheme = 'react';
     }
+    this.isDarkMode = isDarkMode;
 
     // NOTE: Lighting is basically required.
     this.ambientLight = undefined;
@@ -58,10 +76,12 @@ class SceneInit {
   setTheme(themeName) {
     if (this.themeColors[themeName]) {
       this.currentTheme = themeName;
+      this.updateBackgroundColor();
+      
       // Update particle colors based on theme
       if (this.particleSystem) {
         const colors = this.particleSystem.geometry.attributes.color.array;
-        const themeColor = this.themeColors[themeName];
+        const themeColor = this.themeColors[themeName].main;
         for (let i = 0; i < colors.length; i += 3) {
           colors[i] = themeColor.r * 0.7 + Math.random() * 0.3;     // R
           colors[i + 1] = themeColor.g * 0.7 + Math.random() * 0.3; // G
@@ -69,7 +89,29 @@ class SceneInit {
         }
         this.particleSystem.geometry.attributes.color.needsUpdate = true;
       }
+
+      // Update object colors
+      this.objects.forEach(obj => {
+        if (obj.userData.theme) {
+          const material = obj.material;
+          const themeColor = this.themeColors[obj.userData.theme].main;
+          material.color.copy(themeColor);
+          material.emissive.copy(themeColor);
+        }
+      });
     }
+  }
+
+  setDarkMode(isDark) {
+    this.isDarkMode = isDark;
+    this.updateBackgroundColor();
+  }
+
+  updateBackgroundColor() {
+    const bgColor = this.isDarkMode ? 
+      this.themeColors[this.currentTheme].background :
+      this.themeColors[this.currentTheme].lightBackground;
+    this.scene.background = bgColor;
   }
 
   createObjects(count) {
@@ -88,7 +130,7 @@ class SceneInit {
     for (let i = 0; i < count; i++) {
       const geometry = geometries[i];
       const theme = themes[i];
-      const themeColor = this.themeColors[theme];
+      const themeColor = this.themeColors[theme].main;
       
       const material = new THREE.MeshPhongMaterial({
         color: themeColor,
@@ -159,6 +201,9 @@ class SceneInit {
 
   initialize() {
     this.scene = new THREE.Scene();
+    // Set initial background color based on theme and mode
+    this.updateBackgroundColor();
+    
     this.camera = new THREE.PerspectiveCamera(
       this.fov,
       window.innerWidth / window.innerHeight,

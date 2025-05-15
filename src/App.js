@@ -10,7 +10,7 @@ import WorkExperience from './components/WorkExperience';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 
 const AppContent = () => {
-  const { isDarkMode, changeColorTheme } = useTheme();
+  const { changeColorTheme, colorTheme, isDarkMode } = useTheme();
   
   // Store the scene instance in a ref to persist it across re-renders
   const sceneRef = useRef(null);
@@ -39,10 +39,18 @@ const AppContent = () => {
     return () => {
       window.removeEventListener('themeChange', handleThemeChange);
     };
-  }, [changeColorTheme]); // Remove scene creation from dependencies
+  }, [changeColorTheme]);
+
+  // Update Three.js scene when theme changes
+  useEffect(() => {
+    if (sceneRef.current) {
+      sceneRef.current.setTheme(colorTheme);
+      sceneRef.current.setDarkMode(isDarkMode);
+    }
+  }, [colorTheme, isDarkMode]);
 
   return (
-    <div className={`App ${!isDarkMode ? 'light-mode' : ''}`}>
+    <div className="App">
       <NavHeader />
       <header className="App-header">
         <div>

@@ -6,6 +6,10 @@
   border: 1px solid var(--border-transparent);
 }
 
+.light-mode .academic-container {
+  background: rgba(255, 255, 255, 0.8);
+}
+
 .about-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -17,6 +21,10 @@
   margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+}
+
+.light-mode .about-header h2 {
+  color: var(--primary-dark);
 }
 
 .about-header h2::after {
@@ -50,6 +58,10 @@
   overflow: hidden;
 }
 
+.light-mode .academic-item {
+  background: rgba(255, 255, 255, 0.9);
+}
+
 .academic-item::before {
   content: '';
   position: absolute;
@@ -66,7 +78,7 @@
   opacity: 1;
 }
 
-.academic-item[data-theme="react"] {
+.academic-item[data-theme="blue"] {
   border-color: #61dafb40;
 }
 
@@ -88,6 +100,10 @@
   box-shadow: 0 4px 12px var(--accent-transparent);
 }
 
+.light-mode .academic-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
 .academic-date {
   color: var(--primary);
   font-size: 0.9rem;
@@ -99,6 +115,10 @@
   border: 1px solid var(--border-transparent);
 }
 
+.light-mode .academic-date {
+  background: rgba(255, 255, 255, 0.5);
+}
+
 .academic-item h3 {
   color: var(--text-primary);
   font-size: 1.1rem;
@@ -108,16 +128,22 @@
 
 .academic-institution {
   color: var(--text-secondary);
-  font-size: 1rem;
-  margin-bottom: 0.8rem;
-  font-style: italic;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.light-mode .academic-institution {
+  color: var(--primary-dark);
 }
 
 .academic-details {
   color: var(--text-secondary);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1.4;
-  flex-grow: 1;
+}
+
+.light-mode .academic-details {
+  color: var(--primary-dark);
 }
 
 @media (max-width: 1024px) {

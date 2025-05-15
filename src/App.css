@@ -56,11 +56,6 @@
   scroll-behavior: smooth;
 }
 
-.App-logo {
-  height: 20vmin;
-  pointer-events: none;
-}
-
 .App-header {
   background-color: var(--background-dark);
   min-height: 100vh;
@@ -180,16 +175,19 @@ html {
 }
 
 /* Light mode styles */
-.App.light-mode .App-header {
+.light-mode .App-header {
   background-color: var(--background-light);
   color: var(--primary-dark);
 }
 
-.App.light-mode h1 {
-  background: linear-gradient(120deg, var(--primary-dark), var(--primary));
+.light-mode h1 {
+  background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
 }
 
-.App.light-mode .subtitle {
+.light-mode .subtitle {
   color: var(--primary-dark);
   background: var(--accent-transparent);
   border: 1px solid var(--border-transparent);

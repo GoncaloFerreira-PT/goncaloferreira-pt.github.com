@@ -6,10 +6,14 @@
 
 .projects-title {
   font-size: 2.5rem;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+}
+
+.light-mode .projects-title {
+  color: var(--primary-dark);
 }
 
 .projects-title::after {
@@ -30,10 +34,14 @@
 
 .projects-header h2 {
   font-size: 2rem;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+}
+
+.light-mode .projects-header h2 {
+  color: var(--primary-dark);
 }
 
 .projects-header h2::after {
@@ -89,12 +97,21 @@
   pointer-events: none;
 }
 
+.light-mode .project-card {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
 .project-card.active {
   opacity: 1;
   visibility: visible;
   z-index: 2;
   pointer-events: auto;
   box-shadow: 0 15px 40px var(--accent-transparent);
+}
+
+.light-mode .project-card.active {
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
 .project-card.transitioning {
@@ -139,6 +156,10 @@
   color: var(--text-primary);
 }
 
+.light-mode .project-content p {
+  color: var(--primary-dark);
+}
+
 .project-button {
   display: inline-block;
   padding: 0.8rem 1.5rem;
@@ -173,10 +194,19 @@
   backdrop-filter: blur(5px);
 }
 
+.light-mode .nav-button {
+  background: rgba(255, 255, 255, 0.9);
+}
+
 .nav-button:hover {
   background: var(--accent-transparent);
   transform: scale(1.1);
   box-shadow: 0 0 20px var(--accent-transparent);
+}
+
+.light-mode .nav-button:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .carousel-dots {
@@ -196,8 +226,17 @@
   border: 1px solid var(--border-transparent);
 }
 
+.light-mode .dot {
+  background: rgba(255, 255, 255, 0.9);
+}
+
 .dot:hover {
   background: var(--accent-transparent);
+}
+
+.light-mode .dot:hover,
+.light-mode .dot.active {
+  background: var(--primary);
 }
 
 .dot.active {

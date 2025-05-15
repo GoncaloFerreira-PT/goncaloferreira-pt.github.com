@@ -136,9 +136,31 @@
   transform: scale(0.97);
 }
 
+/* Theme toggle button */
+.theme-toggle {
+  background: var(--accent-transparent);
+  border: 1px solid var(--border-transparent);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.theme-toggle:hover {
+  background: var(--accent-transparent);
+  transform: scale(1.1);
+}
+
 /* Light mode styles */
-.light-mode {
-  background: var(--background-light);
+.light-mode .nav-header {
+  background: rgba(248, 249, 250, 0.95);
   border-bottom: 1px solid var(--border-transparent);
 }
 
@@ -155,68 +177,7 @@
   color: var(--primary);
 }
 
-.theme-controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-left: 1rem;
-}
-
-.theme-toggle {
-  background: var(--accent-transparent);
-  border: 1px solid var(--border-transparent);
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--primary);
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-
-.theme-toggle:hover {
-  background: var(--accent-transparent);
-  transform: scale(1.1);
-}
-
-.color-theme-select {
-  background: var(--accent-transparent);
-  border: 1px solid var(--border-transparent);
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  color: var(--primary);
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: all 0.3s ease;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  min-width: 140px;
-}
-
-.color-theme-select:hover {
-  background: var(--accent-transparent);
-  transform: translateY(-2px);
-}
-
-.color-theme-select option {
-  background: var(--background-dark);
-  color: var(--text-primary);
-  padding: 0.5rem;
-}
-
-/* Light mode adjustments */
-.light-mode .theme-toggle,
-.light-mode .color-theme-select {
-  color: var(--primary-dark);
-}
-
-.light-mode .color-theme-select option {
-  background: var(--background-light);
+.light-mode .theme-toggle {
   color: var(--primary-dark);
 }
 
@@ -262,22 +223,8 @@
     height: 2.6rem;
   }
 
-  .theme-controls {
-    width: 100%;
-    justify-content: center;
+  .theme-toggle {
     margin-left: 0;
     margin-top: 0.5rem;
-  }
-
-  .theme-toggle {
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1rem;
-  }
-
-  .color-theme-select {
-    padding: 0.4rem 0.8rem;
-    font-size: 0.85rem;
-    min-width: 120px;
   }
 } 
