@@ -7,7 +7,7 @@
   --text-primary: #ffffff;
   --text-secondary: #ccc;
   --background-dark: #282c34;
-  --background-light: #f8f9fa;
+  --background-light: #dfe0e2;
   --accent-transparent: rgba(97, 218, 251, 0.1);
   --border-transparent: rgba(97, 218, 251, 0.2);
 }
@@ -20,7 +20,7 @@
   --text-primary: #ffffff;
   --text-secondary: #e0aaff;
   --background-dark: #240046;
-  --background-light: #faf5ff;
+  --background-light: #e0d9e8;
   --accent-transparent: rgba(157, 78, 221, 0.1);
   --border-transparent: rgba(157, 78, 221, 0.2);
 }
@@ -33,7 +33,7 @@
   --text-primary: #ffffff;
   --text-secondary: #94d2bd;
   --background-dark: #16323a;
-  --background-light: #f0fff4;
+  --background-light: #dbe5e2;
   --accent-transparent: rgba(44, 182, 125, 0.1);
   --border-transparent: rgba(44, 182, 125, 0.2);
 }
@@ -46,7 +46,7 @@
   --text-primary: #ffffff;
   --text-secondary: #fab1a0;
   --background-dark: #2d3436;
-  --background-light: #fff5f5;
+  --background-light: #e2dfdf;
   --accent-transparent: rgba(255, 107, 107, 0.1);
   --border-transparent: rgba(255, 107, 107, 0.2);
 }
@@ -174,21 +174,64 @@ html {
   }
 }
 
+/* Light mode base styles */
+.light-mode {
+  --text-primary: #2c3e50;
+  --text-secondary: #4a5b6c;
+  --background-light: #f8f9fa;
+  --accent-transparent: rgba(97, 218, 251, 0.06);
+  --border-transparent: rgba(97, 218, 251, 0.12);
+}
+
+/* Theme-specific light mode overrides */
+.theme-react.light-mode {
+  --text-primary: #2c3e50;
+  --text-secondary: #4a5b6c;
+  --background-light: #f8f9fa;
+  --accent-transparent: rgba(97, 218, 251, 0.06);
+  --border-transparent: rgba(97, 218, 251, 0.12);
+}
+
+.theme-purple.light-mode {
+  --text-primary: #3a2f4b;
+  --text-secondary: #574a6b;
+  --background-light: #faf5ff;
+  --accent-transparent: rgba(157, 78, 221, 0.06);
+  --border-transparent: rgba(157, 78, 221, 0.12);
+}
+
+.theme-ocean.light-mode {
+  --text-primary: #2c4a45;
+  --text-secondary: #4a6964;
+  --background-light: #f0fff4;
+  --accent-transparent: rgba(44, 182, 125, 0.06);
+  --border-transparent: rgba(44, 182, 125, 0.12);
+}
+
+.theme-sunset.light-mode {
+  --text-primary: #4a3c3c;
+  --text-secondary: #685757;
+  --background-light: #fff5f5;
+  --accent-transparent: rgba(255, 107, 107, 0.06);
+  --border-transparent: rgba(255, 107, 107, 0.12);
+}
+
 /* Light mode styles */
 .light-mode .App-header {
   background-color: var(--background-light);
-  color: var(--primary-dark);
+  color: var(--text-primary);
 }
 
 .light-mode h1 {
   background: linear-gradient(120deg, var(--primary), var(--primary-dark));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 0 30px rgba(0, 0, 0, 0.03);
 }
 
 .light-mode .subtitle {
-  color: var(--primary-dark);
-  background: var(--accent-transparent);
-  border: 1px solid var(--border-transparent);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }

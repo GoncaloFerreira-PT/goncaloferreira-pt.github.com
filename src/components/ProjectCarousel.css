@@ -59,12 +59,14 @@
 .carousel-container {
   position: relative;
   max-width: 1200px;
-  min-width: 1000px;
+  width: 100%;
   margin: 0 auto;
   height: 500px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 1rem;
+  box-sizing: border-box;
 }
 
 .carousel-track {
@@ -78,12 +80,13 @@
 }
 
 .project-card {
-  margin-left: 10px;
-  margin-right: 10px;
   position: absolute;
-  width: 98%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
   max-width: 900px;
   height: 400px;
+  margin: 0;
   background: var(--accent-transparent);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -91,7 +94,7 @@
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: all 0.3s ease;
   border: 1px solid var(--border-transparent);
   box-shadow: 0 10px 30px var(--accent-transparent);
   pointer-events: none;
@@ -177,7 +180,7 @@
   transform: translateY(-2px);
 }
 
-.nav-button {
+.carousel-nav-button {
   background: var(--accent-transparent);
   border: 1px solid var(--border-transparent);
   border-radius: 50%;
@@ -192,19 +195,28 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 3;
   backdrop-filter: blur(5px);
+  position: absolute;
 }
 
-.light-mode .nav-button {
+.carousel-nav-button.prev {
+  left: 0;
+}
+
+.carousel-nav-button.next {
+  right: 0;
+}
+
+.light-mode .carousel-nav-button {
   background: rgba(255, 255, 255, 0.9);
 }
 
-.nav-button:hover {
+.carousel-nav-button:hover {
   background: var(--accent-transparent);
   transform: scale(1.1);
   box-shadow: 0 0 20px var(--accent-transparent);
 }
 
-.light-mode .nav-button:hover {
+.light-mode .carousel-nav-button:hover {
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
@@ -247,26 +259,34 @@
 
 @media (max-width: 1024px) {
   .projects-section {
-    padding: 2rem 1rem;
+    padding: 2rem 0;
+  }
+
+  .carousel-container {
+    min-width: unset;
+    height: 600px;
+    padding: 0 1.5rem;
   }
 
   .project-card {
     flex-direction: column;
     height: auto;
-    margin: 0 5px;
+    max-height: 550px;
+    width: 100%;
   }
 
   .project-image {
-    flex: 0 0 250px;
+    flex: 0 0 200px;
     width: 100%;
   }
 
   .project-content {
     padding: 1.5rem;
+    overflow-y: auto;
   }
 
   .project-content h3 {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     margin-bottom: 1rem;
   }
 
@@ -274,20 +294,101 @@
     font-size: 1rem;
     margin-bottom: 1.5rem;
   }
+
+  .carousel-dots {
+    margin-top: 1rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 @media (max-width: 768px) {
   .carousel-container {
-    height: 700px;
+    height: 650px;
+    padding: 0 1rem;
   }
 
   .project-card {
-    width: 90%;
+    width: 100%;
+    max-height: 600px;
   }
 
-  .nav-button {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+  .project-image {
+    flex: 0 0 180px;
+  }
+
+  .project-content {
+    padding: 1.2rem;
+  }
+
+  .project-content h3 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .carousel-nav-button {
+    width: 36px;
+    height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .carousel-dots {
+    gap: 0.8rem;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-container {
+    height: 600px;
+    padding: 0 0.8rem;
+  }
+
+  .project-card {
+    width: 100%;
+    max-height: 550px;
+  }
+
+  .project-image {
+    flex: 0 0 160px;
+  }
+
+  .project-content {
+    padding: 1rem;
+  }
+
+  .project-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .project-content p {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 1rem;
+  }
+
+  .carousel-nav-button {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
   }
 } 

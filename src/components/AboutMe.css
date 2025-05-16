@@ -135,7 +135,8 @@
 }
 
 .light-mode .about-card {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--accent-transparent);
+  border: 1px solid var(--border-transparent);
 }
 
 .about-card::before {
@@ -190,8 +191,28 @@
   font-size: 0.95rem;
 }
 
+.light-mode .about-card h3 {
+  color: var(--primary);
+}
+
 .light-mode .about-card p {
-  color: var(--primary-dark);
+  color: var(--text-primary);
+}
+
+.light-mode .tech-icon {
+  color: var(--primary);
+}
+
+.light-mode .tech-tag {
+  color: var(--text-primary);
+  background: var(--accent-transparent);
+  border: 1px solid var(--border-transparent);
+}
+
+.light-mode .tech-tag:hover {
+  background: var(--accent-transparent);
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px var(--accent-transparent);
 }
 
 .about-stats {

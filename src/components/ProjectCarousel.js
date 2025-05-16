@@ -106,7 +106,7 @@ const ProjectCarousel = () => {
         <h2>Projects</h2>
       </div>
       <div className="carousel-container">
-        <button className="nav-button prev" onClick={showPrev}>❮</button>
+        <button className="carousel-nav-button prev" onClick={showPrev}>❮</button>
         <div className="carousel-track">
           {getVisibleProjects().map((project, index) => (
             <div 
@@ -131,7 +131,7 @@ const ProjectCarousel = () => {
             </div>
           ))}
         </div>
-        <button className="nav-button next" onClick={showNext}>❯</button>
+        <button className="carousel-nav-button next" onClick={showNext}>❯</button>
       </div>
       <div className="carousel-dots">
         {projects.map((_, index) => (

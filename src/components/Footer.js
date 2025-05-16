@@ -16,7 +16,6 @@ const Footer = () => {
             goncalo_c_ferreira@hotmail.com
             </a>
           </p>
-          <p>Porto, Portugal</p>
         </div>
         
         <div className="footer-section">
@@ -34,7 +33,6 @@ const Footer = () => {
       
       <div className="footer-bottom">
         <p>&copy; {currentYear} Gonçalo Ferreira. All rights reserved.</p>
-        <p>Built with React & Three.js</p>
       </div>
     </footer>
   );
