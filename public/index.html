@@ -2,8 +2,25 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon_io/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon_io/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon_io/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon_io/apple-touch-icon.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/favicon_io/site.webmanifest" />
     <title>Gonçalo Ferreira</title>
+    <script>
+      const baseTitle = "Gonçalo Ferreira";
+      const loadingChars = ["", ".", ". .", ". . .", ". . . .", ". . . . .", ". . . . . .", ". . . . . . ."];
+      let currentIndex = 0;
+
+      function updateTitle() {
+        document.title = baseTitle + " " + loadingChars[currentIndex];
+        currentIndex = (currentIndex + 1) % loadingChars.length;
+      }
+
+      // Update title every 500ms
+      setInterval(updateTitle, 200);
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
