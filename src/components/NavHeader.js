@@ -70,7 +70,7 @@ const NavHeader = () => {
       <div className="nav-content">
         <div className={`nav-title ${showTitle ? 'visible' : ''}`}>
           <span className="nav-name">Gonçalo Ferreira</span>
-          <span className="nav-role">Full Stack Developer</span>
+          <span className="nav-role">Computer Engineer</span>
         </div>
         <div className="nav-links">
           <button 

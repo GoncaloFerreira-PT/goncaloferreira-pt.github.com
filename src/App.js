@@ -57,8 +57,7 @@ const AppContent = () => {
           <canvas id="canvas" />
         </div>
         <h1>Gonçalo Ferreira</h1>
-        <p className="subtitle">Full Stack Developer</p>
-        
+        <p className="subtitle">Computer Engineer</p>
         <div className="content-sections">
           <div id="about">
             <AboutMe />

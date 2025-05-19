@@ -1,9 +1,12 @@
 import React from 'react';
 import './AcademicHistory.css';
-import { useTheme } from '../context/ThemeContext';
 
 const AcademicHistory = () => {
-  const { THEMES, changeColorTheme } = useTheme();
+
+  const openLink = (url) => {
+    window.open(url, '_blank');
+  };
+  
 
   return (
     <div className="academic-container">
@@ -14,11 +17,11 @@ const AcademicHistory = () => {
         <div 
           className="academic-item"
           data-theme="react"
-          onClick={() => changeColorTheme(THEMES.REACT)}
+          onClick={() => openLink('www.isep.ipp.pt')}
         >
-          <div className="academic-date">2020 - 2023</div>
-          <h3>Master's in Computer Engineering</h3>
-          <p className="academic-institution">University of Porto</p>
+          <div className="academic-date">2017 - 2020</div>
+          <h3>Bachelor's in Computer Engineering</h3>
+          <p className="academic-institution">ISEP - Instituto Superior de Engenharia do Porto</p>
           <p className="academic-details">
             Specialized in Software Engineering and Artificial Intelligence
           </p>
@@ -27,11 +30,12 @@ const AcademicHistory = () => {
         <div 
           className="academic-item"
           data-theme="purple"
-          onClick={() => changeColorTheme(THEMES.PURPLE)}
+          onClick={() => openLink('https://www.enit.fr/en/index.html')}
         >
-          <div className="academic-date">2016 - 2020</div>
-          <h3>Bachelor's in Computer Science</h3>
-          <p className="academic-institution">University of Porto</p>
+          <div className="academic-date">2020</div>
+          <h3>Exchange program in France</h3>
+          <p className="academic-institution">
+          ENIT - Ecole Nationale d'Ingénieurs de Tarbes</p>
           <p className="academic-details">
             Focus on Programming, Algorithms, and Data Structures
           </p>
@@ -40,11 +44,12 @@ const AcademicHistory = () => {
         <div 
           className="academic-item"
           data-theme="ocean"
-          onClick={() => changeColorTheme(THEMES.OCEAN)}
+          onClick={() => openLink('https://www.up.pt/feup/en/')}
         >
-          <div className="academic-date">2019</div>
-          <h3>Exchange Program</h3>
-          <p className="academic-institution">Technical University of Munich</p>
+          <div className="academic-date">2021 - 2024</div>
+          <h3>Master's degree<br/> Multimedia (Video Game Specialty)</h3>
+          <p className="academic-institution">
+          FEUP - Faculty of Engineering of the University of Porto</p>
           <p className="academic-details">
             One semester studying Advanced Computer Graphics and ML
           </p>

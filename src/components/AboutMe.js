@@ -1,7 +1,9 @@
 import React from 'react';
 import './AboutMe.css';
-import { FaReact, FaNodeJs, FaPython } from 'react-icons/fa';
-import { SiMongodb, SiThreedotjs, SiGodotengine } from 'react-icons/si';
+import { FaNodeJs, FaJava, FaUnity, FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { SiGodotengine } from 'react-icons/si';
+import { IoGameController } from "react-icons/io5";
+import { MdGames } from "react-icons/md";
 import { useTheme } from '../context/ThemeContext';
 
 const AboutMe = () => {
@@ -12,6 +14,10 @@ const AboutMe = () => {
     const currentYear = new Date().getFullYear();
     const years = currentYear - startYear;
     return `${years}+`;
+  };
+
+  const openLink = (url) => {
+    window.open(url, '_blank');
   };
 
   return (
@@ -28,29 +34,53 @@ const AboutMe = () => {
           </div>
           <div className="tech-stack">
             <span className="tech-tag">
-              <FaReact className="tech-icon" />
-              React
+              <FaJava className="tech-icon" />
+              Java
             </span>
             <span className="tech-tag">
               <FaNodeJs className="tech-icon" />
-              Node.js
+              JavaScript
             </span>
             <span className="tech-tag">
-              <SiThreedotjs className="tech-icon" />
-              Three.js
+              <IoGameController className="tech-icon" />
+              C++
             </span>
             <span className="tech-tag">
-              <FaPython className="tech-icon" />
-              Python
-            </span>
-            <span className="tech-tag">
-              <SiMongodb className="tech-icon" />
-              MongoDB
+              <MdGames className="tech-icon" />
+              C#
             </span>
             <span className="tech-tag">
               <SiGodotengine className="tech-icon" />
               Godot
             </span>
+            <span className="tech-tag">
+              <FaUnity className="tech-icon" />
+              Unity
+            </span>
+          </div>
+
+          <div className="social-links-about-me">
+            <button 
+              className="social-button"
+              onClick={() => openLink('https://github.com/GoncaloFerreira-PT')}
+            >
+              <FaGithub className="social-icon" />
+              <span>GitHub</span>
+            </button>
+            <button 
+              className="social-button"
+              onClick={() => openLink('https://www.linkedin.com/in/gonçalo-césar-ferreira/')}
+            >
+              <FaLinkedin className="social-icon" />
+              <span>LinkedIn</span>
+            </button>
+            <button 
+              className="social-button"
+              onClick={() => openLink('mailto:goncalo_c_ferreira@hotmail.com')}
+            >
+              <FaEnvelope className="social-icon" />
+              <span>Email</span>
+            </button>
           </div>
         </div>
 

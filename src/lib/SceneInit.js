@@ -33,22 +33,22 @@ class SceneInit {
       'react': {
         main: new THREE.Color('#61dafb'),
         background: new THREE.Color('#222222'),
-        lightBackground: new THREE.Color('#f8f9fa')
+        lightBackground: new THREE.Color('#c7d0d6')
       },
       'purple': {
         main: new THREE.Color('#9d4edd'),
         background: new THREE.Color('#222222'),
-        lightBackground: new THREE.Color('#faf5ff')
+        lightBackground: new THREE.Color('#c8c4cc') 
       },
       'ocean': {
         main: new THREE.Color('#2cb67d'),
         background: new THREE.Color('#222222'),
-        lightBackground: new THREE.Color('#f0fff4')
+        lightBackground: new THREE.Color('#c0ccc3')
       },
       'sunset': {
         main: new THREE.Color('#ff6b6b'),
         background: new THREE.Color('#222222'),
-        lightBackground: new THREE.Color('#fff5f5')
+        lightBackground: new THREE.Color('#ccc4c4')
       }
     };
     
